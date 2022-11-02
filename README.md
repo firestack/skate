@@ -20,9 +20,9 @@ Skate also requires Postgres. If you don't already have Postgres installed, and 
 
 There are a number of configuration details defined in environment variables. These define where data sources live, as well as authentication and CDN details. In our AWS environments these are all set and managed via Terraform.
 
-To avoid having to set these manually in your local development environment, [direnv](https://direnv.net/) is strongly recommended. A `.envrc.example` file is provided to fill out; simply copy it over to `.envrc` and fill in the values, then follow the direnv documentation to load it.
+To avoid having to set these manually in your local development environment, [direnv](https://direnv.net/) is strongly recommended. A [`.envrc.example` file](.envrc.example) is provided to fill out; simply copy it over to `.envrc` and fill in the values, then follow the direnv documentation to load it.
 
-Here are the configuration details defined in `.envrc`:
+The environment variables are documented in the [Skate `.envrc.example` file](.envrc.example).
 
 Here are the values you'll need to be prepared to update to run Skate locally:
 * Your local Postgres server username and password
