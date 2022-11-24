@@ -161,7 +161,7 @@ git log --abbrev-commit --pretty=format:'%h:%s' $(git describe --tags --abbrev=0
 ```
 2. The tag name should be in the format `YYYY-MM-DD-N`, where `N` is used to differentiate between multiple releases in a given day and starts at 1. Create the tag with this command: 
 ```
-git tag -a [tag name]
+git tag -F (git log --abbrev-commit --pretty=format:'%h:%s' $(git describe --tags --abbrev=0)..HEAD | psub) -a (date -Idate)-<N>
 ```
 This will prompt you to enter the annotation from the previous step via your editor. 
 
