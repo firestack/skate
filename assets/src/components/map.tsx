@@ -50,6 +50,7 @@ import {
 } from "./mapMarkers"
 import ZoomLevelWrapper from "./ZoomLevelWrapper"
 import { StreetViewControl } from "./map/controls/StreetViewSwitch"
+import L from "leaflet"
 
 export interface Props {
   reactLeafletRef?: MutableRefObject<LeafletMap | null>
@@ -131,8 +132,6 @@ export const RecenterControl = createControlComponent(
 export const FullscreenControl = createControlComponent(
   Leaflet.control.fullscreen
 )
-
-const tilesetUrl = (): string => appData()?.tilesetUrl || ""
 
 const EventAdder = ({
   streetViewMode,
@@ -376,10 +375,8 @@ export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
         <ZoomControl position="topright" />
         {allowFullscreen && <FullscreenControl position="topright" />}
         <AttributionControl position="bottomright" prefix={false} />
-        <TileLayer
-          url={`${tilesetUrl()}/{z}/{x}/{y}.png`}
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        />
+        <TileSet></TileSet>
+
 
         <Pane name="primaryVehicles" pane="markerPane" style={{ zIndex: 499 }}>
           {props.vehicles.map((vehicle: Vehicle) => (
@@ -496,3 +493,23 @@ export const MapFollowingPrimaryVehicles = (props: Props) => {
 
 const Map = MapFollowingPrimaryVehicles
 export default Map
+
+export const tilesetUrl = (): string => appData()?.tilesetUrl || ""
+
+function TileSet() {
+  const map = useMap()
+  useEffect(() => {
+    if (map != null)
+    L.maplibreGL({
+      style: "http://localhost:8080/styles/basic-preview/style.json",
+
+    }).addTo(map)
+  })
+  return <>
+    {/* <TileLayer
+      url={`${tilesetUrl()}/{z}/{x}/{y}.png`}
+      attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' /> */}
+
+  </>
+}
+

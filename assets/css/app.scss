@@ -45,6 +45,7 @@ $component-active-bg: $color-eggplant-700;
 
 // #region Leaflet
 @import "../node_modules/leaflet/dist/leaflet.css";
+@import "../node_modules/maplibre-gl/dist/maplibre-gl.css";
 // #endregion
 // #endregion
 

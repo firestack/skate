@@ -14,6 +14,8 @@ import "core-js/stable"
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import "phoenix_html"
 import * as React from "react"
+import "maplibre-gl"
+import "@maplibre/maplibre-gl-leaflet"
 import { createRoot } from "react-dom/client"
 import sentryInit from "./helpers/sentryInit"
 import AppStateWrapper from "./components/appStateWrapper"
