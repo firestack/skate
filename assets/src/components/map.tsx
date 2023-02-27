@@ -1,3 +1,5 @@
+// import Tangram from "tangram/dist/tangram.debug"
+import Tangram from "tangram"
 import Leaflet, {
   Control,
   ControlOptions,
@@ -25,7 +27,6 @@ import {
   AttributionControl,
   MapContainer,
   Pane,
-  TileLayer,
   useMap,
   useMapEvents,
   ZoomControl,
@@ -132,7 +133,7 @@ export const FullscreenControl = createControlComponent(
   Leaflet.control.fullscreen
 )
 
-const tilesetUrl = (): string => appData()?.tilesetUrl || ""
+export const tilesetUrl = (): string => appData()?.tilesetUrl || ""
 
 const EventAdder = ({
   streetViewMode,
@@ -376,10 +377,11 @@ export const BaseMap = (props: Props): ReactElement<HTMLDivElement> => {
         <ZoomControl position="topright" />
         {allowFullscreen && <FullscreenControl position="topright" />}
         <AttributionControl position="bottomright" prefix={false} />
-        <TileLayer
+        {/* <TileLayer
           url={`${tilesetUrl()}/{z}/{x}/{y}.png`}
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        />
+        /> */}
+        <TangramTiles></TangramTiles>
 
         <Pane name="primaryVehicles" pane="markerPane" style={{ zIndex: 499 }}>
           {props.vehicles.map((vehicle: Vehicle) => (
@@ -496,3 +498,21 @@ export const MapFollowingPrimaryVehicles = (props: Props) => {
 
 const Map = MapFollowingPrimaryVehicles
 export default Map
+
+function TangramTiles() {
+  const map = useMap()
+
+  useEffect(() => {
+    if (map != null) {
+      // leafletLayer({}).addTo(map)
+      Tangram
+        .leafletLayer({ scene: "http://localhost:8080/styles/basic-preview/style.json" })
+        .addTo(map)
+
+      // L.maplibreGL({
+        //   style: "http://localhost:8080/styles/basic-preview/style.json",
+        // }).addTo(map)
+    }
+  })
+  return <></>
+}

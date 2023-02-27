@@ -30,6 +30,7 @@ module.exports = (env, options) => {
       path: path.resolve(__dirname, "../priv/static/js"),
     },
     module: {
+      noParse: /tangram\/dist\/tangram/,
       rules: [
         {
           test: /\.tsx?$/,
