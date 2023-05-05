@@ -1,10 +1,12 @@
 {
 	description = "A Phoenix project";
 
-	inputs.pre-commit-hooks = {
-		url = "github:cachix/pre-commit-hooks.nix";
-		inputs.nixpkgs.follows = "nixpkgs";
-		inputs.flake-utils.follows = "flake-utils";
+	inputs = {
+		pre-commit-hooks = {
+			url = "github:cachix/pre-commit-hooks.nix";
+			inputs.nixpkgs.follows = "/nixpkgs";
+			inputs.flake-utils.follows = "/flake-utils";
+		};
 	};
 
 	outputs = {
