@@ -8,6 +8,11 @@
 			inputs.flake-utils.follows = "/flake-utils";
 		};
 
+		striptabs = {
+			url = "github:firestack/striptabs";
+			inputs.nixpkgs.follows = "/nixpkgs";
+		};
+
 		devshell = {
 			url = "github:numtide/devshell";
 			inputs.nixpkgs.follows = "/nixpkgs";
@@ -20,6 +25,7 @@
 		nixpkgs,
 		flake-utils,
 		pre-commit-hooks,
+		striptabs,
 		devshell,
 	}:
 		flake-utils.lib.eachSystem [
