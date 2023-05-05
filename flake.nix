@@ -89,7 +89,18 @@
 							]
 							++ fileWatchers;
 
-					# inherit (self.checks.${system}.pre-commit-check) shellHook;
+						imports = [ "${devshell}/extra/git/hooks.nix" ];
+
+						git.hooks.enable = true;
+						git.hooks.pre-commit.text = striptabs.fn ''
+							mix format --check-formatted &&
+							mix compile --force --warnings-as-errors &&
+							mix test &&
+							mix credo &&
+							mix sobelow &&
+							mix dialyzer
+						'';
+						# inherit (self.checks.${system}.pre-commit-check) shellHook;
 
 						env = let
 							fn = attrs: nixpkgs.lib.attrsets.mapAttrsToList (nixpkgs.lib.nameValuePair) attrs;
