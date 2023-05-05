@@ -99,6 +99,17 @@
 						};
 					};
 
+					# default = asdf;
+					skate-asdf = asdf;
+					asdf = mkShell {
+						packages = [
+							pkgs.asdf-vm
+						];
+
+						devshell.startup.asdf.text = striptabs.fn ''
+							source ${pkgs.asdf-vm}/share/asdf-vm/asdf.sh
+						'';
+					};
 				};
 			}
 		);
