@@ -62,10 +62,30 @@
 					CoreFoundation
 					CoreServices
 				]));
-			in rec {
-				# TODO: Add your Elixir package
-				# packages = flake-utils.lib.flattenTree {
-				# } ;
+				version = "0.1.0";
+			in {
+				packages = rec {
+					# default = skate;
+					# skate =
+					mixDependencies = erlangPackages.fetchMixDeps {
+						pname = "mix-deps-skate";
+						mixEnv = "";
+						inherit version;
+						src = self;
+						# sha256 = "sha256-gH0pGRCuiJRJnbNYb78UvofvlHsmHoFEGCwRFQ9/Uv4=";
+						sha256 = "sha256-TfHcfgVmE1EBci++uBKXy4q33SxEMhG4ER7J2t8GzU0=";
+					};
+
+
+					skate-release = erlangPackages.mixRelease {
+						pname = "skate-release";
+						src = ./.;
+						version = "0.1.0";
+
+						# inherit mixNixDeps;
+						mixNixDeps = import ./deps.nix { inherit (nixpkgs) lib; inherit (erlangPackages) beamPackages; };
+					};
+				};
 
 				checks = {
 					pre-commit-check = pre-commit-hooks.lib.${system}.run {
