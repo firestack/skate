@@ -49,9 +49,10 @@
 				erlangVersion = "erlangR24";
 				# Set the Elixir version
 				elixirVersion = "elixir_1_13";
-				erlang = pkgs.beam.interpreters.${erlangVersion};
-				elixir = pkgs.beam.packages.${erlangVersion}.${elixirVersion};
-				elixir_ls = pkgs.beam.packages.${erlangVersion}.elixir_ls;
+
+				erlangPackages = pkgs.beam.packages.${erlangVersion};
+				elixir = erlangPackages.${elixirVersion};
+				inherit (erlangPackages) erlang elixir-ls rebar3 hex;
 
 				inherit (pkgs.lib) optional optionals;
 				inherit (pkgs.devshell) mkShell;
@@ -82,7 +83,9 @@
 						packages = [
 								erlang
 								elixir
-								elixir_ls
+								elixir-ls
+								rebar3
+								hex
 								pkgs.nodejs-14_x
 								pkgs.entr
 								pkgs.lcov
