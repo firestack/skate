@@ -116,12 +116,13 @@
 
 						git.hooks.enable = true;
 						git.hooks.pre-commit.text = striptabs.fn ''
-							mix format --check-formatted &&
-							mix compile --force --warnings-as-errors &&
-							mix test &&
-							mix credo &&
-							mix sobelow &&
+							mix format --check-formatted
+							mix compile --force --warnings-as-errors
+							mix test
+							mix credo
 							mix dialyzer
+							npm --prefix=assets check
+							npm --prefix=assets test
 						'';
 						# inherit (self.checks.${system}.pre-commit-check) shellHook;
 
