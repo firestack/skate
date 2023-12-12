@@ -46,9 +46,9 @@
 				};
 
 				# Set the Erlang version
-				erlangVersion = "erlangR24";
+				erlangVersion = "erlangR26";
 				# Set the Elixir version
-				elixirVersion = "elixir_1_13";
+				elixirVersion = "elixir_1_15";
 
 				erlangPackages = pkgs.beam.packages.${erlangVersion};
 				elixir = erlangPackages.${elixirVersion};
@@ -106,7 +106,7 @@
 								elixir-ls
 								rebar3
 								hex
-								pkgs.nodejs-14_x
+								pkgs.nodejs_20
 								pkgs.entr
 								pkgs.lcov
 							]
