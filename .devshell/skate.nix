@@ -38,7 +38,6 @@
 				"npm --prefix=assets check"
 				"npm --prefix=assets test"
 			];
-			# inherit (self.checks.${system}.pre-commit-check) shellHook;
 
 			env = let
 				fn = attrs: lib.attrsets.mapAttrsToList (lib.nameValuePair) attrs;
