@@ -8,6 +8,7 @@
 		flake-parts.lib.mkFlake { inherit inputs; } {
 			imports = [
 				devshell.flakeModule
+				./.devshell/skate.nix
 			];
 
 			systems = [
@@ -18,8 +19,8 @@
 				"x86_64-linux"
 			];
 
-			perSystem = { pkgs, ... }: {
-				devshells.default = { };
+			perSystem = { config, self', ... }: {
+				devShells.default = self'.devShells.skate;
 			};
 		};
 }
