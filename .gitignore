@@ -57,7 +57,14 @@ node_modules
 # ENV variables
 .envrc
 
+# MacOS FS XAttrs
 .DS_Store
+
+# Storybook
 assets/build-storybook.log
 
+# Ignore nix direnv cache
 /.direnv/
+
+# Ignore nix builds
+/result
