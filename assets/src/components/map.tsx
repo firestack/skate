@@ -1,8 +1,10 @@
-import Leaflet, { LatLng, LatLngLiteral, Map as LeafletMap } from "leaflet"
+import Leaflet, { LatLng, Map as LeafletMap } from "leaflet"
 
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
 import "leaflet.fullscreen"
 import React, {
+  ComponentProps,
+  ComponentPropsWithRef,
   MutableRefObject,
   ReactElement,
   useEffect,
@@ -11,7 +13,6 @@ import React, {
 } from "react"
 import {
   AttributionControl,
-  MapContainer,
   Pane,
   TileLayer,
   useMapEvents,
@@ -31,17 +32,21 @@ import {
   TrainVehicleMarker,
   VehicleMarker,
 } from "./mapMarkers"
-import ZoomLevelWrapper from "./ZoomLevelWrapper"
+import ZoomLevelProvider, { ZoomLevel, useZoomLevel } from "./ZoomLevelWrapper"
 import { StreetViewControl } from "./map/controls/StreetViewSwitch"
 import StreetViewModeEnabledContext from "../contexts/streetViewModeEnabledContext"
-import { TileType, tilesetUrlForType } from "../tilesetUrls"
+import { TileType } from "../tilesetUrls"
 import { TileTypeContext } from "../contexts/tileTypeContext"
-import getMapLimits from "../mapLimits"
 import {
   useInteractiveFollowerState,
   RecenterControlWithInterruptibleFollower,
   usePickerContainerFollowerFn,
 } from "./map/follower"
+import {
+  MapDefaults,
+  SkateAttributionControl,
+  SkateTileLayer,
+} from "./MapDefaults"
 
 export interface Props {
   reactLeafletRef?: MutableRefObject<LeafletMap | null>
@@ -64,10 +69,85 @@ export interface Props {
   stations?: Stop[] | null
 }
 
-export const defaultCenter: LatLngLiteral = {
-  lat: 42.360718,
-  lng: -71.05891,
+const Map = (props: Props): ReactElement<HTMLDivElement> => {
+  const [streetViewEnabled, setStreetViewEnabled] = useState<boolean>(
+    props.streetViewInitiallyEnabled || false
+  )
+
+  const { allowFullscreen = true } = props
+
+  return (
+    <>
+      <MapDefaults ref={props.reactLeafletRef}>
+        <MapVehicles.All
+          primaryVehicles={props.vehicles}
+          secondaryVehicles={props.secondaryVehicles ?? []}
+          onPrimaryVehicleSelect={props.onPrimaryVehicleSelect}
+          selectedVehicleId={props.selectedVehicleId}
+        />
+
+        <RouteShapes shapes={props.shapes ?? []} />
+        <MapTrainVehicles trainVehicles={props.trainVehicles ?? []} />
+
+        <SkateTileLayer tileType={props.tileType}>
+          <ZoomLevel.Provider>
+            <ZoomLevel.Consumer>
+              {(zoomLevel) => (
+                <>
+                  <ShapesStops
+                    shapes={props.shapes ?? []}
+                    zoomLevel={zoomLevel}
+                  />
+                  <Pane
+                    name="notableLocationMarkers"
+                    pane="markerPane"
+                    style={{ zIndex: 410 }}
+                  >
+                    <MapStations
+
+                      zoomLevel={zoomLevel}
+                      stations={props.stations ?? []}
+                    />
+                    {zoomLevel >= 15 && (
+                      <MapStations
+
+                        zoomLevel={zoomLevel}
+                        stations={props.stations ?? []}
+                      />
+                    )}
+                    {zoomLevel >= 15 && <GarageMarkers zoomLevel={zoomLevel} />}
+                  </Pane>
+                </>
+              )}
+            </ZoomLevel.Consumer>
+
+            <StreetViewModeEnabledContext.Provider value={streetViewEnabled}>
+              {props.children}
+            </StreetViewModeEnabledContext.Provider>
+          </ZoomLevel.Provider>
+        </SkateTileLayer>
+
+        <EventAdder />
+
+        {props.allowStreetView && (
+          <StreetViewControl
+            position="topright"
+            streetViewEnabled={streetViewEnabled}
+            setStreetViewEnabled={setStreetViewEnabled}
+          />
+        )}
+
+        <ZoomControl position="topright" />
+
+        {allowFullscreen && <FullscreenControl position="topright" />}
+
+        <SkateAttributionControl />
+      </MapDefaults>
+    </>
+  )
 }
+
+export default Map
 
 export const FullscreenControl = createControlComponent(
   Leaflet.control.fullscreen
@@ -80,156 +160,6 @@ const EventAdder = (): ReactElement => {
     popupclose: (e) => (e.popup.options.autoPan = true),
   })
   return <></>
-}
-
-const Map = (props: Props): ReactElement<HTMLDivElement> => {
-  const mapRef: MutableRefObject<LeafletMap | null> =
-    // this prop is only for tests, and is consistent between renders, so the hook call is consistent
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    props.reactLeafletRef || useRef(null)
-  const defaultZoom = 13
-  const [streetViewEnabled, setStreetViewEnabled] = useState<boolean>(
-    props.streetViewInitiallyEnabled || false
-  )
-
-  const mapLimits = getMapLimits()
-  const { allowFullscreen = true } = props
-
-  const stateClasses = joinClasses([
-    "c-vehicle-map-state",
-    streetViewEnabled ? "c-vehicle-map-state--street-view-enabled" : null,
-    props.stateClasses,
-  ])
-
-  const stops = (props.shapes || []).flatMap((shape) => shape.stops || [])
-  const tileType = props.tileType || "base"
-
-  return (
-    <>
-      <div className={stateClasses} />
-      <MapContainer
-        className="c-vehicle-map"
-        id="id-vehicle-map"
-        maxBounds={
-          mapLimits
-            ? [
-                [mapLimits.south, mapLimits.west],
-                [mapLimits.north, mapLimits.east],
-              ]
-            : undefined
-        }
-        zoomControl={false}
-        center={defaultCenter}
-        zoom={defaultZoom}
-        ref={mapRef}
-        attributionControl={false}
-      >
-        <TileLayer
-          url={`${tilesetUrlForType(tileType)}`}
-          attribution={
-            tileType === "base"
-              ? '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              : '<a href="https://www.mass.gov/info-details/massgis-data-2021-aerial-imagery">MassGIS 2021</a>'
-          }
-        />
-        <EventAdder />
-        {props.allowStreetView && (
-          <StreetViewControl
-            position="topright"
-            streetViewEnabled={streetViewEnabled}
-            setStreetViewEnabled={setStreetViewEnabled}
-          />
-        )}
-
-        <ZoomControl position="topright" />
-
-        {allowFullscreen && <FullscreenControl position="topright" />}
-        <AttributionControl position="bottomright" prefix={false} />
-        <TileTypeContext.Provider value={tileType}>
-          <Pane
-            name="primaryVehicles"
-            pane="markerPane"
-            style={{ zIndex: 499 }}
-          >
-            {props.vehicles.map((vehicle: Vehicle) => (
-              <VehicleMarker
-                key={vehicle.id}
-                vehicle={vehicle}
-                isPrimary={true}
-                isSelected={props.selectedVehicleId === vehicle.id}
-                onSelect={props.onPrimaryVehicleSelect}
-              />
-            ))}
-          </Pane>
-
-          <Pane
-            name="secondaryVehicles"
-            pane="markerPane"
-            style={{ zIndex: 400 }}
-          >
-            {(props.secondaryVehicles || []).map((vehicle) => (
-              <VehicleMarker
-                key={vehicle.id}
-                vehicle={vehicle}
-                isPrimary={false}
-              />
-            ))}
-          </Pane>
-
-          {(props.trainVehicles || []).map((trainVehicle: TrainVehicle) => (
-            <TrainVehicleMarker
-              key={trainVehicle.id}
-              trainVehicle={trainVehicle}
-            />
-          ))}
-          {(props.shapes || []).map((shape) => (
-            <RouteShape key={shape.id} shape={shape} />
-          ))}
-
-          <ZoomLevelWrapper>
-            {(zoomLevel) => (
-              <>
-                {stops.length > 0 && (
-                  <Pane
-                    name="routeStopMarkers"
-                    pane="markerPane"
-                    style={{ zIndex: 450 }} // should be above other non-interactive elements
-                  >
-                    <RouteStopMarkers
-                      stops={stops}
-                      zoomLevel={zoomLevel}
-                      includeStopCard={
-                        props.includeStopCard && inTestGroup(TestGroups.MapBeta)
-                      }
-                    />
-                  </Pane>
-                )}
-
-                <Pane
-                  name="notableLocationMarkers"
-                  pane="markerPane"
-                  style={{ zIndex: 410 }}
-                >
-                  {zoomLevel >= 15 &&
-                    props.stations?.map((station) => (
-                      <StationMarker
-                        key={station.id}
-                        station={station}
-                        zoomLevel={zoomLevel}
-                      />
-                    ))}
-                  {zoomLevel >= 15 && <GarageMarkers zoomLevel={zoomLevel} />}
-                </Pane>
-              </>
-            )}
-          </ZoomLevelWrapper>
-          <StreetViewModeEnabledContext.Provider value={streetViewEnabled}>
-            {props.children}
-          </StreetViewModeEnabledContext.Provider>
-        </TileTypeContext.Provider>
-      </MapContainer>
-    </>
-  )
 }
 
 export const vehicleToLeafletLatLng = ({
@@ -280,4 +210,185 @@ export const MapFollowingSelectionKey = (
   )
 }
 
-export default Map
+
+interface MapVehiclesProps {
+  vehicles: Vehicle[]
+  selectedVehicleId?: VehicleId
+  onSelect?: (vehicle: Vehicle) => void
+
+  variant?: MapVehiclesVariant
+
+  zIndex?: number
+}
+
+enum MapVehiclesVariant {
+  Primary,
+  Secondary,
+}
+
+const MapVehicles = ({
+  vehicles,
+  selectedVehicleId,
+  onSelect,
+  variant,
+  zIndex,
+}: MapVehiclesProps) => {
+  return (
+    <Pane
+      name={
+        variant == MapVehiclesVariant.Primary
+          ? "primaryVehicles"
+          : "secondaryVehicles"
+      }
+      pane="markerPane"
+      style={{ zIndex }}
+    >
+      {vehicles.map((vehicle: Vehicle) => (
+        <VehicleMarker
+          key={vehicle.id}
+          vehicle={vehicle}
+          isPrimary={true}
+          isSelected={selectedVehicleId === vehicle.id}
+          onSelect={onSelect}
+        />
+      ))}
+    </Pane>
+  )
+}
+
+type PartialBy<
+  T,
+  KPartial extends keyof T,
+  KOmit extends keyof T = KPartial
+> = Partial<Pick<T, KPartial>> & Omit<T, KPartial | KOmit>
+
+type VehicleVariantProps = PartialBy<
+  ComponentPropsWithRef<typeof MapVehicles>,
+  "zIndex",
+  "variant"
+>
+
+const Primary = (props: VehicleVariantProps) => (
+  <MapVehicles zIndex={490} {...props} variant={MapVehiclesVariant.Primary} />
+)
+
+const Secondary = (props: VehicleVariantProps) => (
+  <MapVehicles zIndex={400} {...props} variant={MapVehiclesVariant.Secondary} />
+)
+
+MapVehicles.Primary = Primary
+MapVehicles.Secondary = Secondary
+
+type AllVehiclesProps = Omit<
+  VehicleVariantProps,
+  "onSelect" | "vehicles" | "zIndex"
+> & {
+  primaryVehicles: VehicleVariantProps["vehicles"]
+  secondaryVehicles: VehicleVariantProps["vehicles"]
+  onPrimaryVehicleSelect?: VehicleVariantProps["onSelect"]
+  onSecondaryVehicleSelect?: VehicleVariantProps["onSelect"]
+}
+
+const MapVehiclesAll = ({
+  primaryVehicles,
+  secondaryVehicles,
+  selectedVehicleId,
+  onPrimaryVehicleSelect,
+  onSecondaryVehicleSelect,
+}: AllVehiclesProps) => (
+  <>
+    <MapVehicles.Primary
+      vehicles={primaryVehicles}
+      selectedVehicleId={selectedVehicleId}
+      onSelect={onPrimaryVehicleSelect}
+    />
+    <MapVehicles.Secondary
+      vehicles={secondaryVehicles}
+      selectedVehicleId={selectedVehicleId}
+      onSelect={onSecondaryVehicleSelect}
+    />
+  </>
+)
+
+MapVehicles.All = MapVehiclesAll
+
+const MapTrainVehicles = ({
+  trainVehicles,
+}: {
+  trainVehicles: TrainVehicle[]
+}) => (
+  <>
+    {(trainVehicles || []).map((trainVehicle) => (
+      <TrainVehicleMarker key={trainVehicle.id} trainVehicle={trainVehicle} />
+    ))}
+  </>
+)
+
+const RouteShapes = ({ shapes }: { shapes: Shape[] }) => (
+  <>
+    {(shapes || []).map((shape) => (
+      <RouteShape key={shape.id} shape={shape} />
+    ))}
+  </>
+)
+
+const MapStations = ({
+  stations,
+  zoomLevel,
+}: {
+  stations: Stop[]
+  zoomLevel: number
+}) => (
+  <>
+    {stations.map((station) => (
+      <StationMarker key={station.id} station={station} zoomLevel={zoomLevel} />
+    ))}
+  </>
+)
+
+const RouteStops = ({
+  stops,
+  zoomLevel,
+  zIndex = 450,
+  includeStopCard = false,
+}: {
+  stops: Stop[]
+  zoomLevel: number | (() => number)
+  zIndex?: number
+  includeStopCard?: boolean
+}) => (
+  <>
+    <Pane
+      name="routeStopMarkers"
+      pane="markerPane"
+      style={{ zIndex }} // should be above other non-interactive elements
+    >
+      <RouteStopMarkers
+        stops={stops}
+        zoomLevel={typeof zoomLevel === "function" ? zoomLevel() : zoomLevel }
+        includeStopCard={includeStopCard && inTestGroup(TestGroups.MapBeta)}
+      />
+    </Pane>
+  </>
+)
+
+type RouteStopsZoomLevelContextProps = PartialBy<
+  ComponentProps<typeof RouteStops>,
+  "zoomLevel"
+>
+const RouteStopsZoomLevelContext = (props: RouteStopsZoomLevelContextProps) => (
+  <RouteStops zoomLevel={useZoomLevel()} {...props} />
+)
+RouteStops.FromZoomContext = RouteStopsZoomLevelContext
+
+type ShapesStopsProps = Omit<ComponentProps<typeof RouteStops>, "stops"> & {
+  shapes: Shape[]
+}
+export const ShapesStops = (props: ShapesStopsProps) => (
+  <RouteStops
+    {...props}
+    stops={(props.shapes || []).flatMap((shape) => shape.stops || [])}
+  />
+)
+
+// export const ShapesStopsZoomLevelContext = ()

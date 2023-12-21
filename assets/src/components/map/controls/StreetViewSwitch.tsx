@@ -17,6 +17,7 @@ export interface StreetViewControlProps extends ControlOptions {
 export const StreetViewControl = ({
   streetViewEnabled,
   setStreetViewEnabled,
+  position = "topright",
 }: StreetViewControlProps): JSX.Element | null => {
   const map = useMap()
   const portalParent = map

@@ -1,6 +1,7 @@
 import React from "react"
 import { DiversionPanel, DiversionPanelProps } from "./diversionPanel"
 import MapDisplay from "../mapPage/mapDisplay"
+import { MapDefaults } from "../MapDefaults"
 
 export const DiversionPage = ({
   directions,
@@ -25,11 +26,7 @@ export const DiversionPage = ({
       />
     </div>
     <div className="l-diversion-page__map">
-      <MapDisplay
-        selectedEntity={null}
-        setSelection={() => {}}
-        fetchedSelectedLocation={null}
-      />
+      <MapDefaults></MapDefaults>
     </div>
   </article>
 )

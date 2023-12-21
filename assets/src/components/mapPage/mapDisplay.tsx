@@ -44,7 +44,7 @@ import {
 } from "../mapMarkers"
 import { MapSafeAreaContext } from "../../contexts/mapSafeAreaContext"
 import { LocationSearchMarker } from "../map/markers/locationSearchMarker"
-import ZoomLevelWrapper from "../ZoomLevelWrapper"
+import { ZoomLevel, useZoomLevel } from "../ZoomLevelWrapper"
 import StreetViewModeEnabledContext from "../../contexts/streetViewModeEnabledContext"
 import { streetViewUrl } from "../../util/streetViewUrl"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
@@ -201,7 +201,7 @@ const RoutePatternLayers = ({
 }): JSX.Element => {
   return routePattern.shape ? (
     <>
-      <ZoomLevelWrapper>
+      <ZoomLevel.Consumer>
         {(zoomLevel) => {
           return (
             <>
@@ -227,7 +227,7 @@ const RoutePatternLayers = ({
             </>
           )
         }}
-      </ZoomLevelWrapper>
+      </ZoomLevel.Consumer>
     </>
   ) : (
     <></>
@@ -520,17 +520,11 @@ const NearbyStops = ({ stops }: { stops: Stop[] }) => {
   }, [map, filterStopsToBounds])
 
   return (
-    <ZoomLevelWrapper>
-      {(zoomLevel) => {
-        return (
-          <StopMarkers
-            stops={nearbyStops}
-            zoomLevel={zoomLevel}
-            includeStopCard={true}
-          />
-        )
-      }}
-    </ZoomLevelWrapper>
+    <StopMarkers
+      stops={nearbyStops}
+      zoomLevel={useZoomLevel()}
+      includeStopCard={true}
+    />
   )
 }
 

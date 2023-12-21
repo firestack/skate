@@ -15,10 +15,10 @@ import React, { MutableRefObject } from "react"
 import { act } from "@testing-library/react"
 import { Map as LeafletMap } from "leaflet"
 import Map, {
-  defaultCenter,
   MapFollowingPrimaryVehicles,
   MapFollowingSelectionKey,
 } from "../../src/components/map"
+import { defaultCenter } from "../../src/components/MapDefaults"
 import { autoCenter } from "../../src/components/map/follower"
 import { TrainVehicle, VehicleInScheduledService } from "../../src/realtime"
 import vehicleFactory from "../factories/vehicle"

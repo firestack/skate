@@ -19,7 +19,7 @@ import { useMap, useMapEvents } from "react-leaflet"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { equalByElements } from "../../helpers/array"
 import { RecenterControl } from "./controls/recenterControl"
-import { defaultCenter } from "../map"
+import { defaultCenter } from "../MapDefaults"
 
 export type UpdateMapFromPointsFn = (map: LeafletMap, points: LatLng[]) => void
 

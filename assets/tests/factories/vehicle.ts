@@ -1,5 +1,5 @@
 import { Factory } from "fishery"
-import { defaultCenter } from "../../src/components/map"
+import { defaultCenter } from "../../src/components/MapDefaults"
 import {
   VehicleInScheduledService,
   VehicleTimepointStatus,

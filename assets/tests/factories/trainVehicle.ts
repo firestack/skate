@@ -1,6 +1,6 @@
 import { Factory } from "fishery"
 import { TrainVehicle } from "../../src/realtime"
-import { defaultCenter } from "../../src/components/map"
+import { defaultCenter } from "../../src/components/MapDefaults"
 
 export default Factory.define<TrainVehicle>(({ sequence }) => ({
   id: `t${sequence}`,

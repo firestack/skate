@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 
-import { defaultCenter } from "../../src/components/map"
+import { defaultCenter } from "../../src/components/MapDefaults"
 
 import { StreetViewButton } from "../../src/components/streetViewButton"
 
