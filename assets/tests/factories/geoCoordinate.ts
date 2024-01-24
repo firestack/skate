@@ -1,6 +1,6 @@
 import { Factory } from "fishery"
 import { defaultCenter } from "../../src/components/map"
-import { GeographicCoordinate } from "../../src/components/streetViewButton"
+import { GeographicCoordinate } from "../../src/util/geographicCoordinate"
 
 interface GeographicCoordinateParams {
   start: GeographicCoordinate

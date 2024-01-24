@@ -3,6 +3,7 @@ import { fetchDetourDirections } from "../../src/api"
 import { renderHook, waitFor } from "@testing-library/react"
 import { useDetour } from "../../src/hooks/useDetour"
 import { act } from "react-dom/test-utils"
+import { coordinate } from "../../src/util/geographicCoordinate"
 
 jest.mock("../../src/api")
 
@@ -12,7 +13,7 @@ beforeEach(() => {
 
 describe("useDetour", () => {
   test("when `addConnectionPoint` is first called, `startPoint` is set", () => {
-    const start = { lat: 0, lon: 0 }
+    const start = coordinate(0, 0)
 
     const { result } = renderHook(useDetour)
 
@@ -22,8 +23,8 @@ describe("useDetour", () => {
   })
 
   test("when `addConnectionPoint` is called a second time, `endPoint` is set", () => {
-    const start = { lat: 0, lon: 0 }
-    const end = { lat: 1, lon: 1 }
+    const start = coordinate(0, 0)
+    const end = coordinate(1, 1)
 
     const { result } = renderHook(useDetour)
 
@@ -45,8 +46,8 @@ describe("useDetour", () => {
   })
 
   test("when `endPoint` is set, `addWaypoint` does nothing", () => {
-    const start = { lat: 0, lon: 0 }
-    const end = { lat: 1, lon: 1 }
+    const start = coordinate(0, 0)
+    const end = coordinate(1, 1)
 
     const { result } = renderHook(useDetour)
 
@@ -61,12 +62,9 @@ describe("useDetour", () => {
   })
 
   test("when `addWaypoint` is called, `detourShape` is updated", async () => {
-    const start = { lat: 0, lon: 0 }
-    const end = { lat: 1, lon: 1 }
-    const apiResult = [
-      { lat: -1, lon: -1 },
-      { lat: -2, lon: -2 },
-    ]
+    const start = coordinate(0, 0)
+    const end = coordinate(1, 1)
+    const apiResult = [coordinate(-1, -1), coordinate(-2, -2)]
 
     jest.mocked(fetchDetourDirections).mockImplementation((coordinates) => {
       expect(coordinates).toStrictEqual([start, end])
@@ -91,8 +89,8 @@ describe("useDetour", () => {
   })
 
   test("when `undoLastWaypoint` is called, removes the last `waypoint`", async () => {
-    const start = { lat: 0, lon: 0 }
-    const end = { lat: 1, lon: 1 }
+    const start = coordinate(0, 0)
+    const end = coordinate(1, 1)
 
     const { result } = renderHook(useDetour)
 
@@ -107,9 +105,9 @@ describe("useDetour", () => {
   })
 
   test("when `undoLastWaypoint` is called, should call API with updated waypoints", async () => {
-    const start = { lat: 0, lon: 0 }
-    const mid = { lat: 0.5, lon: 0.5 }
-    const end = { lat: 1, lon: 1 }
+    const start = coordinate(0, 0)
+    const mid = coordinate(0.5, 0.5)
+    const end = coordinate(1, 1)
 
     const { result } = renderHook(useDetour)
 

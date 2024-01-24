@@ -5,6 +5,7 @@ import { DetourMap } from "../../../src/components/detours/detourMap"
 import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom/jest-globals"
 import { defaultCenter } from "../../../src/components/map"
+import { coordinate } from "../../../src/util/geographicCoordinate"
 
 beforeEach(() => {
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
@@ -30,7 +31,7 @@ const DetourMapWithDefaults = (
 describe("DetourMap", () => {
   test("when `originalShape` is clicked, fires `onClickOriginalShape`", async () => {
     const onClickOriginalShape = jest.fn()
-    const shapePoint = { lat: 0, lon: 0 }
+    const shapePoint = coordinate(0, 0)
     const { container } = render(
       <DetourMapWithDefaults
         originalShape={[shapePoint]}

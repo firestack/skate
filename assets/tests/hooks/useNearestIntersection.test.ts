@@ -8,7 +8,7 @@ import {
 } from "../../tests/testHelpers/mockHelpers"
 import { gridIntersectionFactory } from "../factories/gridIntersection"
 import { localGeoCoordinateFactory } from "../factories/geoCoordinate"
-import { GeographicCoordinate } from "../../src/components/streetViewButton"
+import { GeographicCoordinate } from "../../src/util/geographicCoordinate"
 
 jest.mock("../../src/api", () => ({
   __esModule: true,

@@ -1,4 +1,4 @@
-import { GeographicCoordinateBearing } from "../components/streetViewButton"
+import { GeographicCoordinateBearing } from "./geographicCoordinate"
 
 export const streetViewUrl = ({
   latitude,

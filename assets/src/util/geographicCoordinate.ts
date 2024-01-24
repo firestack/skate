@@ -15,6 +15,22 @@ export interface Bearing {
 export type GeographicCoordinateBearing = GeographicCoordinate &
   Partial<Bearing>
 
+export const latLngToCoordinate = ({
+  lat: latitude,
+  lng: longitude,
+}: {
+  lat: number
+  lng: number
+}): GeographicCoordinate => ({ latitude, longitude })
+
+export const latLonToCoordinate = ({
+  lat: latitude,
+  lon: longitude,
+}: {
+  lat: number
+  lon: number
+}): GeographicCoordinate => ({ latitude, longitude })
+
 export const coordinateToLatLngLiteral = ({
   latitude,
   longitude,

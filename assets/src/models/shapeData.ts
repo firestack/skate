@@ -1,6 +1,7 @@
 import { array, Infer, number, optional, string, type } from "superstruct"
 import { Shape } from "../schedule"
 import { StopData, stopsFromData } from "./stopData"
+import { latLonToCoordinate } from "../util/geographicCoordinate"
 
 export const ShapeData = type({
   id: string(),
@@ -18,9 +19,7 @@ export type ShapeData = Infer<typeof ShapeData>
 
 export const shapeFromData = (shapeData: ShapeData): Shape => ({
   id: shapeData.id,
-  points: shapeData.points.map((pointData) => {
-    return { lat: pointData.lat, lon: pointData.lon }
-  }),
+  points: shapeData.points.map(latLonToCoordinate),
   stops: shapeData.stops ? stopsFromData(shapeData.stops) : undefined,
 })
 
