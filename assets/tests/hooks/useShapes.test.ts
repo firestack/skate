@@ -69,11 +69,11 @@ describe("useRouteShapes", () => {
     const shapes: Shape[] = [
       {
         id: "shape1",
-        points: [{ lat: 42.41356, lon: -70.99211 }],
+        points: [{ latitude: 42.41356, longitude: -70.99211 }],
       },
       {
         id: "shape2",
-        points: [{ lat: 43.41356, lon: -71.99211 }],
+        points: [{ latitude: 43.41356, longitude: -71.99211 }],
       },
     ]
     const mockFetchShape: jest.Mock = Api.fetchShapeForRoute as jest.Mock
@@ -90,11 +90,11 @@ describe("useRouteShapes", () => {
     const shapes: Shape[] = [
       {
         id: "shape1",
-        points: [{ lat: 42.41356, lon: -70.99211 }],
+        points: [{ latitude: 42.41356, longitude: -70.99211 }],
       },
       {
         id: "shape2",
-        points: [{ lat: 43.41356, lon: -71.99211 }],
+        points: [{ latitude: 43.41356, longitude: -71.99211 }],
       },
     ]
     const selectedRouteIds = ["2", "3"]
@@ -118,7 +118,7 @@ describe("useRouteShapes", () => {
     const shapes: Shape[] = [
       {
         id: "shape",
-        points: [{ lat: 42.41356, lon: -70.99211 }],
+        points: [{ latitude: 42.41356, longitude: -70.99211 }],
       },
     ]
     const shapesByRouteId = {
@@ -151,7 +151,7 @@ describe("useTripShape", () => {
   test("returns a shape when loaded", () => {
     const shape: Shape = {
       id: "shape",
-      points: [{ lat: 42.41356, lon: -70.99211 }],
+      points: [{ latitude: 42.41356, longitude: -70.99211 }],
     }
     const mockFetchShape: jest.Mock = Api.fetchShapeForTrip as jest.Mock
     mockFetchShape.mockImplementationOnce(() => instantPromise(shape))
@@ -183,7 +183,7 @@ describe("useTripShape", () => {
   test("returns null when trip id changes to null", () => {
     const shape: Shape = {
       id: "shape",
-      points: [{ lat: 42.41356, lon: -70.99211 }],
+      points: [{ latitude: 42.41356, longitude: -70.99211 }],
     }
     const mockFetchShape: jest.Mock = Api.fetchShapeForTrip as jest.Mock
     mockFetchShape.mockImplementationOnce(() => instantPromise(shape))

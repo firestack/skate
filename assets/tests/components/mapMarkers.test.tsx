@@ -205,7 +205,9 @@ describe("RouteStopMarkers", () => {
 describe("RouteShape", () => {
   test("shape is rendered", () => {
     const { container } = renderInMap(
-      <RouteShape shape={{ id: "shape1", points: [{ lat: 0, lon: 0 }] }} />
+      <RouteShape
+        shape={{ id: "shape1", points: [{ latitude: 0, longitude: 0 }] }}
+      />
     )
     expect(
       container.querySelector(".c-vehicle-map__route-shape")
@@ -215,7 +217,7 @@ describe("RouteShape", () => {
   test("has selected class when isSelected is true", () => {
     const { container } = renderInMap(
       <RouteShape
-        shape={{ id: "shape1", points: [{ lat: 0, lon: 0 }] }}
+        shape={{ id: "shape1", points: [{ latitude: 0, longitude: 0 }] }}
         isSelected={true}
       />
     )
@@ -229,7 +231,7 @@ describe("RouteShape", () => {
       <RouteShape
         shape={{
           id: "shape1",
-          points: [{ lat: 0, lon: 0 }],
+          points: [{ latitude: 0, longitude: 0 }],
           className: "route-shape--red",
         }}
       />

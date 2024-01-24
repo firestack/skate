@@ -40,8 +40,8 @@ import { recenterControl } from "../testHelpers/selectors/components/map/control
 const shape = shapeFactory.build({
   id: "shape",
   points: [
-    { lat: 0, lon: 0 },
-    { lat: 0, lon: 0 },
+    { latitude: 0, longitude: 0 },
+    { latitude: 0, longitude: 0 },
   ],
   stops: [
     stopFactory.build({

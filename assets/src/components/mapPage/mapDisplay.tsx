@@ -358,7 +358,7 @@ const SelectedRouteDataLayers = ({
     : undefined
   const routeShapePositions = selectedRoutePattern
     ? selectedRoutePattern.shape?.points?.map((p) =>
-        Leaflet.latLng(p.lat, p.lon)
+        Leaflet.latLng(p.latitude, p.longitude)
       ) || []
     : []
 

@@ -39,7 +39,7 @@ describe("useDetour", () => {
 
     expect(result.current.startPoint).toBeNull()
 
-    act(() => result.current.addWaypoint({ lat: 0, lon: 0 }))
+    act(() => result.current.addWaypoint({ latitude: 0, longitude: 0 }))
 
     expect(result.current.waypoints).toEqual([])
   })
@@ -55,7 +55,7 @@ describe("useDetour", () => {
     act(() => result.current.addConnectionPoint(start))
     act(() => result.current.addConnectionPoint(end))
 
-    act(() => result.current.addWaypoint({ lat: 0, lon: 0 }))
+    act(() => result.current.addWaypoint({ latitude: 0, longitude: 0 }))
 
     expect(result.current.waypoints).toEqual([])
   })
@@ -128,7 +128,7 @@ describe("useDetour", () => {
   test("when `waypoints` is empty, `canUndo` is `false`", async () => {
     const { result } = renderHook(useDetour)
 
-    act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
+    act(() => result.current.addConnectionPoint({ latitude: 0, longitude: 0 }))
 
     expect(result.current.waypoints).toStrictEqual([])
     expect(result.current.canUndo).toBe(false)
@@ -137,8 +137,8 @@ describe("useDetour", () => {
   test("when `waypoints` is not empty, `canUndo` is `true`", async () => {
     const { result } = renderHook(useDetour)
 
-    act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
-    act(() => result.current.addWaypoint({ lat: 1, lon: 1 }))
+    act(() => result.current.addConnectionPoint({ latitude: 0, longitude: 0 }))
+    act(() => result.current.addWaypoint({ latitude: 1, longitude: 1 }))
 
     expect(result.current.canUndo).toBe(true)
   })
@@ -146,8 +146,8 @@ describe("useDetour", () => {
   test("when `endPoint` is set, `canUndo` is `false`", async () => {
     const { result } = renderHook(useDetour)
 
-    act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
-    act(() => result.current.addConnectionPoint({ lat: 0, lon: 0 }))
+    act(() => result.current.addConnectionPoint({ latitude: 0, longitude: 0 }))
+    act(() => result.current.addConnectionPoint({ latitude: 0, longitude: 0 }))
 
     expect(result.current.canUndo).toBe(false)
   })

@@ -374,8 +374,8 @@ export const RouteShape = React.memo(
     children?: JSX.Element
   }) => {
     const positions: LatLngExpression[] = shape.points.map((point) => [
-      point.lat,
-      point.lon,
+      point.latitude,
+      point.longitude,
     ])
 
     const tileType = useContext(TileTypeContext)

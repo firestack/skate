@@ -75,7 +75,9 @@ describe("DetourMap", () => {
 
     expect(screen.queryByTitle("Detour Start")).not.toBeInTheDocument()
 
-    rerender(<DetourMapWithDefaults startPoint={{ lat: 0, lon: 0 }} />)
+    rerender(
+      <DetourMapWithDefaults startPoint={{ latitude: 0, longitude: 0 }} />
+    )
 
     expect(screen.getByTitle("Detour Start")).toBeVisible()
   })
@@ -85,7 +87,7 @@ describe("DetourMap", () => {
 
     expect(screen.queryByTitle("Detour End")).not.toBeInTheDocument()
 
-    rerender(<DetourMapWithDefaults endPoint={{ lat: 0, lon: 0 }} />)
+    rerender(<DetourMapWithDefaults endPoint={{ latitude: 0, longitude: 0 }} />)
 
     expect(screen.getByTitle("Detour End")).toBeVisible()
   })
@@ -100,9 +102,9 @@ describe("DetourMap", () => {
     rerender(
       <DetourMapWithDefaults
         waypoints={[
-          { lat: 0, lon: 0 },
-          { lat: 1, lon: 1 },
-          { lat: 2, lon: 2 },
+          { latitude: 0, longitude: 0 },
+          { latitude: 1, longitude: 1 },
+          { latitude: 2, longitude: 2 },
         ]}
       />
     )

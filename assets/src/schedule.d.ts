@@ -1,5 +1,6 @@
 import { LocationType, RouteType } from "./models/stopData"
 import { RunId } from "./realtime"
+import { GeographicCoordinate } from "./util/geographicCoordinate"
 
 export type BlockId = string
 
@@ -66,10 +67,7 @@ export interface Shape {
 
 export type ShapeId = string
 
-export interface ShapePoint {
-  lat: number
-  lon: number
-}
+export type ShapePoint = GeographicCoordinate
 
 export type TimepointId = string
 
