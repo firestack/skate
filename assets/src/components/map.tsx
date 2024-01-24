@@ -42,6 +42,10 @@ import {
   RecenterControlWithInterruptibleFollower,
   usePickerContainerFollowerFn,
 } from "./map/follower"
+import {
+  coordinate,
+  coordinateToLatLngLiteral,
+} from "../util/geographicCoordinate"
 
 export interface Props extends PropsWithChildren {
   reactLeafletRef?: MutableRefObject<LeafletMap | null>
@@ -63,10 +67,9 @@ export interface Props extends PropsWithChildren {
   stations?: Stop[] | null
 }
 
-export const defaultCenter: LatLngLiteral = {
-  lat: 42.360718,
-  lng: -71.05891,
-}
+export const defaultCenter: LatLngLiteral = coordinateToLatLngLiteral(
+  coordinate(42.360718, -71.05891)
+)
 
 export const FullscreenControl = createControlComponent(
   Leaflet.control.fullscreen
