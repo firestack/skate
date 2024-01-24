@@ -9,9 +9,9 @@ import { ReactMarker } from "../map/utilities/reactMarker"
 import { closestPosition } from "../../util/math"
 import { ShapePoint } from "../../schedule"
 import {
-  latLngLiteralToShapePoint,
-  shapePointToLatLngLiteral,
-} from "../../util/pointLiterals"
+  coordinateToLatLngLiteral,
+  latLngToCoordinate,
+} from "../../util/geographicCoordinate"
 
 interface DetourMapProps {
   /**
@@ -86,40 +86,40 @@ export const DetourMap = ({
 
     <MapEvents
       click={(e) => {
-        onClickMap(latLngLiteralToShapePoint(e.latlng))
+        onClickMap(latLngToCoordinate(e.latlng))
       }}
     />
 
     {startPoint && (
-      <StartMarker position={shapePointToLatLngLiteral(startPoint)} />
+      <StartMarker position={coordinateToLatLngLiteral(startPoint)} />
     )}
 
     {waypoints.map((position) => (
       <DetourPointMarker
         key={JSON.stringify(position)}
-        position={shapePointToLatLngLiteral(position)}
+        position={coordinateToLatLngLiteral(position)}
       />
     ))}
 
-    {endPoint && <EndMarker position={shapePointToLatLngLiteral(endPoint)} />}
+    {endPoint && <EndMarker position={coordinateToLatLngLiteral(endPoint)} />}
 
     <Polyline
-      positions={detourShape.map(shapePointToLatLngLiteral)}
+      positions={detourShape.map(coordinateToLatLngLiteral)}
       className="c-detour_map--detour-route-shape"
     />
 
     <Polyline
-      positions={originalShape.map(shapePointToLatLngLiteral)}
+      positions={originalShape.map(coordinateToLatLngLiteral)}
       className="c-detour_map--original-route-shape"
       bubblingMouseEvents={false}
       eventHandlers={{
         click: (e) => {
           const { position } =
             closestPosition(
-              originalShape.map(shapePointToLatLngLiteral),
+              originalShape.map(coordinateToLatLngLiteral),
               e.latlng
             ) ?? {}
-          position && onClickOriginalShape(latLngLiteralToShapePoint(position))
+          position && onClickOriginalShape(latLngToCoordinate(position))
         },
       }}
     />
