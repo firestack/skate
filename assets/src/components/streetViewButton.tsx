@@ -4,15 +4,8 @@ import { WalkingIcon } from "../helpers/icon"
 import { streetViewUrl as streetViewUrlFrom } from "../util/streetViewUrl"
 import { fullStoryEvent } from "../helpers/fullStory"
 import { Button } from "react-bootstrap"
+import { GeographicCoordinateBearing } from "../util/geographicCoordinate"
 
-export interface GeographicCoordinate {
-  latitude: number
-  longitude: number
-}
-
-export interface GeographicCoordinateBearing extends GeographicCoordinate {
-  bearing?: number
-}
 
 export interface StreetViewButtonProps extends GeographicCoordinateBearing {
   className?: string
