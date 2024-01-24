@@ -6,7 +6,6 @@ import { fullStoryEvent } from "../helpers/fullStory"
 import { Button } from "react-bootstrap"
 import { GeographicCoordinateBearing } from "../util/geographicCoordinate"
 
-
 export interface StreetViewButtonProps extends GeographicCoordinateBearing {
   className?: string
   text?: string
