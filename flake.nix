@@ -30,6 +30,8 @@
 						phoenix = true;
 						extraPackages = [
 							pkgs.nodejs_20
+							pkgs.adrgen
+							pkgs.entr
 						];
 					};
 					versions = {
