@@ -28,6 +28,9 @@
 						languageServers.elixir = true;
 						languageServers.erlang = false;
 						phoenix = true;
+						extraPackages = [
+							pkgs.nodejs_20
+						];
 					};
 					versions = {
 						fromToolVersions = ./.tool-versions;
