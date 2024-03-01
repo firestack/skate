@@ -324,8 +324,8 @@ describe("fetchRoutePatterns", () => {
             id: "shape1",
             points: [
               {
-                lat: 42.41356,
-                lon: -70.99211,
+                latitude: 42.41356,
+                longitude: -70.99211,
               },
             ],
           },
@@ -369,8 +369,8 @@ describe("fetchShapeForRoute", () => {
         id: "shape1",
         points: [
           {
-            lat: 42.41356,
-            lon: -70.99211,
+            latitude: 42.41356,
+            longitude: -70.99211,
           },
         ],
       },
@@ -378,8 +378,8 @@ describe("fetchShapeForRoute", () => {
         id: "shape2",
         points: [
           {
-            lat: 43.41356,
-            lon: -71.99211,
+            latitude: 43.41356,
+            longitude: -71.99211,
           },
         ],
       },
@@ -421,8 +421,8 @@ describe("fetchShapeForTrip", () => {
       id: "shape",
       points: [
         {
-          lat: 42.41356,
-          lon: -70.99211,
+          latitude: 42.41356,
+          longitude: -70.99211,
         },
       ],
     }

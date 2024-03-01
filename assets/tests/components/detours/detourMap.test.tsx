@@ -55,8 +55,8 @@ describe("DetourMap", () => {
     await userEvent.click(container.querySelector(".c-vehicle-map")!)
 
     expect(onClickMap).toHaveBeenNthCalledWith(1, {
-      lat: expect.closeTo(defaultCenter.lat),
-      lon: expect.closeTo(defaultCenter.lng),
+      latitude: expect.closeTo(defaultCenter.lat),
+      longitude: expect.closeTo(defaultCenter.lng),
     })
   })
 

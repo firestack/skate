@@ -33,8 +33,8 @@ describe("stopsFromData", () => {
         name: "Station 1",
         locationType: LocationType.Station,
         vehicleType: null,
-        lat: 42.1,
-        lon: -71.1,
+        latitude: 42.1,
+        longitude: -71.1,
         routes: undefined,
       },
       {
@@ -42,8 +42,8 @@ describe("stopsFromData", () => {
         name: "Stop 2",
         locationType: LocationType.Stop,
         vehicleType: RouteType.Bus,
-        lat: 42.2,
-        lon: -71.2,
+        latitude: 42.2,
+        longitude: -71.2,
         routes: undefined,
       },
     ])
@@ -60,8 +60,8 @@ describe("stopsFromData", () => {
         name: stop.name,
         locationType: stop.location_type,
         vehicleType: null,
-        lat: stop.lat,
-        lon: stop.lon,
+        latitude: stop.lat,
+        longitude: stop.lon,
         routes: stop.routes,
       },
     ])

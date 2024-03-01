@@ -500,7 +500,9 @@ const NearbyStops = ({ stops }: { stops: Stop[] }) => {
     const bounds = map.getBounds()
     // Only show nearby stations or bus stops
     setNearbyStops(
-      stationsAndBus.filter((s) => bounds.contains(coordinateToLatLngLiteral(s)))
+      stationsAndBus.filter((s) =>
+        bounds.contains(coordinateToLatLngLiteral(s))
+      )
     )
   }, [map, stationsAndBus, setNearbyStops])
 

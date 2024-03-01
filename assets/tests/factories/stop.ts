@@ -9,7 +9,7 @@ const stopFactory = Factory.define<Stop>(({ sequence }) => ({
   locationType: LocationType.Stop,
   vehicleType: 3,
   routes: undefined,
-  ...localGeoCoordinateFactory.build()
+  ...localGeoCoordinateFactory.build(),
 }))
 
 export default stopFactory

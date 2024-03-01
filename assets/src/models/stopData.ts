@@ -52,8 +52,8 @@ export const stopsFromData = (stopsData: StopData[]): Stop[] =>
   stopsData.map((stopData) => ({
     id: stopData.id,
     name: stopData.name,
-    lat: stopData.lat,
-    lon: stopData.lon,
+    latitude: stopData.lat,
+    longitude: stopData.lon,
     locationType:
       stopData.location_type === "station"
         ? LocationType.Station
