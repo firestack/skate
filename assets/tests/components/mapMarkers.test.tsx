@@ -158,8 +158,8 @@ describe("StopMarkers", () => {
         stops={[
           stop,
           stopFactory.build({
-            lat: stop.lat,
-            lon: stop.lon,
+            latitude: stop.latitude,
+            longitude: stop.longitude,
             locationType: LocationType.Station,
           }),
         ]}
@@ -188,8 +188,8 @@ describe("RouteStopMarkers", () => {
         stops={[
           stop,
           stopFactory.build({
-            lat: stop.lat,
-            lon: stop.lon,
+            latitude: stop.latitude,
+            longitude: stop.longitude,
             locationType: LocationType.Station,
           }),
         ]}

@@ -102,8 +102,8 @@ const StopCard = ({
         </div>
       ) : null}
       <StreetViewButton
-        latitude={stop.lat}
-        longitude={stop.lon}
+        latitude={stop.latitude}
+        longitude={stop.longitude}
       ></StreetViewButton>
     </Popup>
   )

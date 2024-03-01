@@ -47,8 +47,8 @@ const shape = shapeFactory.build({
     stopFactory.build({
       id: "stop",
       name: "stop",
-      lat: 0,
-      lon: 0,
+      latitude: 0,
+      longitude: 0,
     }),
   ],
 })

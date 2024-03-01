@@ -60,6 +60,7 @@ import { LocationType, RouteType } from "../../models/stopData"
 import usePullbackVehicles from "../../hooks/usePullbackVehicles"
 import { fullStoryEvent } from "../../helpers/fullStory"
 import { RecenterControl } from "../map/controls/recenterControl"
+import { coordinateToLatLngLiteral } from "../../util/geographicCoordinate"
 
 const SecondaryRouteVehicles = ({
   selectedVehicleRoute,
@@ -499,7 +500,7 @@ const NearbyStops = ({ stops }: { stops: Stop[] }) => {
     const bounds = map.getBounds()
     // Only show nearby stations or bus stops
     setNearbyStops(
-      stationsAndBus.filter((s) => bounds.contains([s.lat, s.lon]))
+      stationsAndBus.filter((s) => bounds.contains(coordinateToLatLngLiteral(s)))
     )
   }, [map, stationsAndBus, setNearbyStops])
 

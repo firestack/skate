@@ -146,8 +146,8 @@ describe("<MapDisplay />", () => {
       // 1 station not near center which should not be visible
       stopFactory.build({
         locationType: LocationType.Station,
-        lat: 42.0,
-        lon: -71.0,
+        latitude: 42.0,
+        longitude: -71.0,
       }),
       // 1 stop near center which should not be visible
       stopFactory.build({
@@ -187,8 +187,8 @@ describe("<MapDisplay />", () => {
       // 1 station not near center which should not be visible
       stopFactory.build({
         locationType: LocationType.Station,
-        lat: 42.0,
-        lon: -71.0,
+        latitude: 42.0,
+        longitude: -71.0,
       }),
       // 1 stop near center which should  be visible
       stopFactory.build({
@@ -202,8 +202,8 @@ describe("<MapDisplay />", () => {
       // 1 stop not near center which should not be visible
       stopFactory.build({
         locationType: LocationType.Stop,
-        lat: 41.0,
-        lon: -72.0,
+        latitude: 41.0,
+        longitude: -72.0,
       }),
     ])
 
@@ -810,8 +810,8 @@ describe("<MapDisplay />", () => {
       const shape = shapeFactory.build({
         stops: [
           stopFactory.build({
-            lat: latitude,
-            lon: longitude,
+            latitude,
+            longitude,
           }),
         ],
       })

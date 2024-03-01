@@ -10,11 +10,9 @@ export type DirectionName = string
 
 export type StopId = string
 
-export interface Stop {
+export interface Stop extends GeographicCoordinate {
   id: StopId
   name: string
-  lat: number
-  lon: number
   routes?: { type: number; id: RouteId; name: string }[]
   locationType: LocationType | null
   vehicleType: RouteType | null

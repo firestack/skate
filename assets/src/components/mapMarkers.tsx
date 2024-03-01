@@ -28,6 +28,7 @@ import { streetViewUrl } from "../util/streetViewUrl"
 import { TileTypeContext } from "../contexts/tileTypeContext"
 import { ReactMarker } from "./map/utilities/reactMarker"
 import { fullStoryEvent } from "../helpers/fullStory"
+import { coordinateToLatLngLiteral } from "../util/geographicCoordinate"
 
 /*  eslint-enable @typescript-eslint/ban-ts-comment */
 
@@ -238,7 +239,7 @@ export const StationMarker = React.memo(
 
     return (
       <Marker
-        position={[station.lat, station.lon]}
+        position={coordinateToLatLngLiteral(station)}
         icon={stationLeafletIcon({ size: iconSizeLength })}
         eventHandlers={{
           tooltipopen: fireEvent,
@@ -262,7 +263,7 @@ export const StationMarker = React.memo(
 const uniqueStopsByLocation = (stops: Stop[]) => {
   const locationToStop: Record<string, Stop> = {}
   stops.forEach((stop) => {
-    const key = `${stop.lat}_${stop.lon}`
+    const key = `${stop.latitude}_${stop.longitude}`
     const existingStopAtLocation = locationToStop[key]
     if (
       existingStopAtLocation === undefined ||
@@ -321,17 +322,14 @@ export const StopMarkers = ({
                     streetViewActive
                       ? {
                           click: () => {
-                            const url = streetViewUrl({
-                              latitude: stop.lat,
-                              longitude: stop.lon,
-                            })
+                            const url = streetViewUrl(stop)
                             fullStoryEvent(
                               "User clicked map bus stop to open street view",
                               {
                                 streetViewUrl_str: url,
                                 clickedMapAt: {
-                                  latitude_real: stop.lat,
-                                  longitude_real: stop.lon,
+                                  latitude_real: stop.latitude,
+                                  longitude_real: stop.longitude,
                                 },
                               }
                             )

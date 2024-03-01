@@ -10,6 +10,7 @@ import { MobileFriendlyTooltip } from "../../mapMarkers"
 import StopCard from "../../stopCard"
 import { ReactMarker } from "../utilities/reactMarker"
 import { fullStoryEvent } from "../../../helpers/fullStory"
+import { coordinateToLatLngLiteral } from "../../../util/geographicCoordinate"
 
 /**
  * Specific variants that the `StopIcon` can render
@@ -197,7 +198,7 @@ export const StopMarker = ({
   return (
     <ReactMarker
       {...(props as MarkerProps)}
-      position={[stop.lat, stop.lon]}
+      position={coordinateToLatLngLiteral(stop)}
       divIconSettings={divIconSettings}
       icon={
         <StopIcon
