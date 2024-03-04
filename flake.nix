@@ -64,10 +64,7 @@
 						"echo -e \"Use the devshell command 'database:start'\""
 					]; }];
 
-					serviceGroups.skate.services = {
-						postgres.command = "postgres -D ./pgdata";
-						phoenix.command = "mix phx.server";
-					};
+					serviceGroups.database.services.postgres.command = "postgres -D ./pgdata";
 				};
 			};
 		};
