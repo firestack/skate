@@ -60,3 +60,4 @@ if config_env() == :prod do
       keycloak: keycloak_opts
     ]
 end
+

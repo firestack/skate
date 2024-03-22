@@ -12,6 +12,9 @@ defmodule Skate.Application do
 
     load_runtime_config()
 
+    :ok = :opentelemetry_cowboy.setup()
+    :ok = OpentelemetryPhoenix.setup(adapter: :cowboy2)
+
     start_data_processes? = Application.get_env(:skate, :start_data_processes)
 
     # List all child processes to be supervised

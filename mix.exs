@@ -23,7 +23,12 @@ defmodule Skate.MixProject do
   #
   # Type `mix help compile.app` for more information.
   def application do
-    apps = [:logger, :runtime_tools]
+    apps = [
+      :logger,
+      :runtime_tools,
+      :opentelemetry_exporter,
+      :opentelemetry
+    ]
 
     apps =
       if Mix.env() == :prod do
@@ -89,6 +94,13 @@ defmodule Skate.MixProject do
       {:timex, "~> 3.7.5"},
       {:ueberauth_cognito, "~> 0.4.0"},
       {:ueberauth_oidcc, "~> 0.3.1"},
+      {:opentelemetry_exporter, "~> 1.6"},
+      {:opentelemetry, "~> 1.3"},
+      {:opentelemetry_api, "~> 1.2"},
+      {:opentelemetry_ecto, "~> 1.2"},
+      {:opentelemetry_oban, "~> 1.1"},
+      {:opentelemetry_phoenix, "~> 1.2"},
+      {:opentelemetry_cowboy, "~> 0.3.0"},
       {:ueberauth, "~> 0.10.5"}
     ]
   end

@@ -2,6 +2,8 @@ defmodule SkateWeb.Endpoint do
   use Sentry.PlugCapture
   use Phoenix.Endpoint, otp_app: :skate
 
+  plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]
+
   socket "/socket", SkateWeb.UserSocket,
     websocket: [check_origin: Application.compile_env(:skate, :websocket_check_origin, false)],
     longpoll: false
